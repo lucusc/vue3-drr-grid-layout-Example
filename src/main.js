@@ -1,10 +1,9 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import GridLayout from 'vue3-drr-grid-layout';
-import 'vue3-drr-grid-layout/dist/style.css';
+import VueGridLayout from 'vue-grid-layout';
 
 const app = createApp(App);
 
-app.use(GridLayout);
+app.use(VueGridLayout);
 
 app.mount('#app');

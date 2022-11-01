@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import MenuIcon from 'vue-material-design-icons/Menu.vue';
+import { GridLayout, GridItem } from 'vue-grid-layout';
 
 const layout = [
   { x: 0, y: 0, w: 2, h: 4, i: 0 },
@@ -35,15 +36,9 @@ const bounded = ref(true);
 
 <template>
   <h3>Grid layout for vue 3 with draggable, resize, responsive events.</h3>
-  <p>
-    Rewritten to TypeScript, Composition API and migrated to Vue3. See the
-    <a href="https://www.npmjs.com/package/vue3-drr-grid-layout"
-      >vue3-drr-grid-layout</a
-    >
-    project.
-  </p>
+  <p></p>
 
-  <GridLayout
+  <grid-layout
     v-model:layout="layout"
     :col-num="12"
     :row-height="35"
@@ -53,28 +48,25 @@ const bounded = ref(true);
     @move="move"
     @moved="moved"
   >
-    <template #default="{ gridItemProps }" :maxRows="3">
-      <grid-item
-        v-for="item in layout"
-        :key="item.i"
-        v-bind="gridItemProps"
-        :x="item.x"
-        :y="item.y"
-        :w="item.w"
-        :h="item.h"
-        :i="item.i"
-        @move="move"
-        @moved="moved"
-      >
-        <img
-          crossorigin="anonymous"
-          src="https://placedog.net/120/200"
-          class="img-thumbnail"
-        />
-      </grid-item>
-    </template>
+    <grid-item
+      v-for="item in layout"
+      :key="item.i"
+      :x="item.x"
+      :y="item.y"
+      :w="item.w"
+      :h="item.h"
+      :i="item.i"
+      @move="move"
+      @moved="moved"
+    >
+      <img
+        crossorigin="anonymous"
+        src="https://placedog.net/120/200"
+        class="img-thumbnail"
+      />
+    </grid-item>
     <!-- <template #item="{ item }">
       {{ item.i }}
     </template> -->
-  </GridLayout>
+  </grid-layout>
 </template>
