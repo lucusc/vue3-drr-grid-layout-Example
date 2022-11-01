@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import MenuIcon from 'vue-material-design-icons/Menu.vue';
 
 const layout = [
   { x: 0, y: 0, w: 2, h: 4, i: 0 },
@@ -14,10 +15,23 @@ const layout = [
   { x: 6, y: 3, w: 2, h: 4, i: 9 },
 ];
 
-const resize = () => {
-  console.log('resized');
+const move = () => {
+  console.log('move');
 };
+
+const moved = () => {
+  console.log('moved');
+};
+
+const bounded = ref(true);
 </script>
+
+<style>
+.img-thumbnail {
+  height: auto;
+  max-width: 100%;
+}
+</style>
 
 <template>
   <h3>Grid layout for vue 3 with draggable, resize, responsive events.</h3>
@@ -32,10 +46,10 @@ const resize = () => {
   <GridLayout
     v-model:layout="layout"
     :col-num="12"
-    :row-height="30"
-    :maxRows="3"
+    :row-height="35"
+    :maxRows="2"
     :isResizable="false"
-    @resize="resize"
+    :is-bounded="bounded"
     @move="move"
     @moved="moved"
   >
@@ -49,11 +63,14 @@ const resize = () => {
         :w="item.w"
         :h="item.h"
         :i="item.i"
-        @resize="resize"
         @move="move"
         @moved="moved"
       >
-        {{ item.i }}
+        <img
+          crossorigin="anonymous"
+          src="https://placedog.net/120/200"
+          class="img-thumbnail"
+        />
       </grid-item>
     </template>
     <!-- <template #item="{ item }">
