@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "gridstack": "^7.1.0",
     "vue": "^3.2.38",
-    "vue-grid-layout": "^3.0.0-beta1",
     "vue-material-design-icons": "^5.1.2"
   },
   "devDependencies": {

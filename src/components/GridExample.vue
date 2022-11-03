@@ -1,30 +1,45 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import MenuIcon from 'vue-material-design-icons/Menu.vue';
-import { GridLayout, GridItem } from 'vue-grid-layout';
+import { GridStack } from 'gridstack';
 
-const layout = [
-  { x: 0, y: 0, w: 2, h: 4, i: 0 },
-  { x: 2, y: 0, w: 2, h: 4, i: 1 },
-  { x: 4, y: 0, w: 2, h: 4, i: 2 },
-  { x: 6, y: 0, w: 2, h: 4, i: 3 },
-  { x: 8, y: 0, w: 2, h: 4, i: 4 },
-  { x: 8, y: 0, w: 2, h: 4, i: 5 },
-  { x: 0, y: 5, w: 2, h: 4, i: 6 },
-  { x: 2, y: 5, w: 2, h: 4, i: 7 },
-  { x: 4, y: 5, w: 2, h: 4, i: 8 },
-  { x: 6, y: 3, w: 2, h: 4, i: 9 },
+let count = ref(0);
+let info = ref('');
+let grid = null;
+
+const items = [
+  { x: 2, y: 1, h: 2, content: 'item 1' },
+  { x: 2, y: 4, w: 3, content: 'item 2' },
+  { x: 4, y: 2, content: 'item 3' },
+  { x: 3, y: 1, h: 2, content: 'item 4' },
+  { x: 0, y: 6, w: 2, h: 2, content: 'item 5' },
 ];
 
-const move = () => {
-  console.log('move');
-};
+onMounted(() => {
+  grid = GridStack.init({
+    minRow: 1,
+    cellHeight: '70px',
+    float: false,
+    dragInOptions: { appendTo: 'body', helper: 'clone' },
+  });
+  grid.load(items);
 
-const moved = () => {
-  console.log('moved');
-};
+  grid.on('change', (event, element) => {
+    const node = element.gridstackNode;
+    info.value = `you just dragged node #${node.id} to ${node.x},${node.y} – good job!`;
+  });
+});
 
-const bounded = ref(true);
+const addNewWidget = () => {
+  const node = items[count.value] || {
+    x: Math.round(12 * Math.random()),
+    y: Math.round(5 * Math.random()),
+    w: Math.round(1 + 3 * Math.random()),
+    h: Math.round(1 + 3 * Math.random()),
+  };
+  node.id = node.content = String(count.value++);
+  grid.addWidget(node);
+};
 </script>
 
 <style>
@@ -32,41 +47,21 @@ const bounded = ref(true);
   height: auto;
   max-width: 100%;
 }
+
+.grid-stack {
+  background: #fafad2;
+}
+.grid-stack-item-content {
+  background-color: #18bc9c;
+}
 </style>
 
 <template>
-  <h3>Grid layout for vue 3 with draggable, resize, responsive events.</h3>
+  <h3>Grid layout for vue 3 using GridStack</h3>
   <p></p>
 
-  <grid-layout
-    v-model:layout="layout"
-    :col-num="12"
-    :row-height="35"
-    :maxRows="2"
-    :isResizable="false"
-    :is-bounded="bounded"
-    @move="move"
-    @moved="moved"
-  >
-    <grid-item
-      v-for="item in layout"
-      :key="item.i"
-      :x="item.x"
-      :y="item.y"
-      :w="item.w"
-      :h="item.h"
-      :i="item.i"
-      @move="move"
-      @moved="moved"
-    >
-      <img
-        crossorigin="anonymous"
-        src="https://placedog.net/120/200"
-        class="img-thumbnail"
-      />
-    </grid-item>
-    <!-- <template #item="{ item }">
-      {{ item.i }}
-    </template> -->
-  </grid-layout>
+  <div class="grid-stack"></div>
+
+  <button type="button" @click="addNewWidget()">Add Widget</button>
+  {{ info }}
 </template>
